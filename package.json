@@ -12,5 +12,10 @@
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
     "morgan": "^1.10.0"
-  }
+  },
+  "main": "server.js",
+  "repository": "https://github.com/AshokSasi/WEBD6201-ASasitharan-ICE9.git",
+  "author": "Ashok Sasitharan <asasitharan28@gmail.com>",
+  "license": "MIT",
+  "description": "Demo project for ICE 9"
 }
