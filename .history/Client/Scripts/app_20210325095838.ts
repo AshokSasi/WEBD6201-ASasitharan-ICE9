@@ -1,7 +1,17 @@
-
 namespace core
 {
-    let linkData: string;
+
+    
+ 
+
+
+
+  
+
+    
+
+    
+   
 
     function testFullName(): void
     {
@@ -91,9 +101,8 @@ namespace core
               localStorage.setItem(key, contact.serialize());
             }
           }
-
-          // reload contact page
-          location.href ='/contact';
+          location.href = '/contact' // reload contact page
+         
         });
     }
 
@@ -135,7 +144,8 @@ namespace core
         contactList.innerHTML = data;
 
         $("button.edit").on("click", function(){
-          location.href = '/edit/' + $(this).val().toString();
+        
+          location.href = '/edit?' +  $(this).val().toString();
          });
 
          $("button.delete").on("click", function(){
@@ -143,9 +153,7 @@ namespace core
            {
             localStorage.removeItem($(this).val().toString());
            }
-         
-           // refresh the page
-           location.href = '/contact-list';
+           location.href = '/contact-list'; // refresh the page
          });
       }
 
@@ -157,7 +165,7 @@ namespace core
 
     function displayEdit(): void
     {
-      let key = $("body")[0].dataset.contactid;
+      let key = clientRouter.LinkData;
 
       let contact = new core.Contact();
 
@@ -204,15 +212,14 @@ namespace core
           }
 
           // return to the contact list
-          linkData = "";
-          location.href = '/contact-list';
+          loadLink("contact-list");
           
         });
 
       $("#cancelButton").on("click", function()
       {
         // return to the contact list
-        location.href = '/contact-list';
+        loadLink("contact-list");
       });
     }
 
@@ -252,7 +259,7 @@ namespace core
             messageArea.removeAttr("class").hide();
 
             // redirect user to secure area - contact-list.html
-            location.href = '/contact-list';
+            loadLink("contact-list");
           }
           else
           {
@@ -268,11 +275,16 @@ namespace core
         // clear the login form
         document.forms[0].reset();
         // return to the home page
-        location.href = '/home';
+        loadLink("home");
       });
     }
 
-    /* function toggleLogin(): void
+    function displayRegister(): void
+    {
+
+    }
+
+    function toggleLogin(): void
     {
       let contactListLink = $("#contactListLink")[0]; // makes a reference to the contact-list link
 
@@ -311,22 +323,46 @@ namespace core
 
       addLinkEvents();
       highlightActiveLink(clientRouter.ActiveLink);
-    } */
+    }
 
     function authGuard():void
     {
       if(!sessionStorage.getItem("user"))
       {
       // redirect back to login page
-      //loadLink("login");
-      location.href = '/login';
+      loadLink("login");
       }
     }
 
-    function performLogout():void
+    function display404():void
     {
-      sessionStorage.clear();
-      location.href = "/login";
+
+    }
+
+    /**
+     * This function associates and returns a related callback to a route
+     *
+     * @param {string} activeLink
+     * @returns {Function}
+     */
+    function ActiveLinkCallBack(activeLink:string): Function
+    {
+      switch (activeLink) 
+      {
+        case "home": return displayHome;
+        case "about": return displayAbout;
+        case "projects": return displayProjects;
+        case "services": return displayServices;
+        case "contact": return displayContact;
+        case "contact-list": return displayContactList;
+        case "edit": return displayEdit;
+        case "login": return displayLogin;
+        case "register": return displayRegister;
+        case "404": return display404;
+        default:
+          console.error("ERROR: callback does not exist: " + activeLink);
+          break;
+      }
     }
 
     /**
@@ -335,26 +371,11 @@ namespace core
      */
     function Start(): void
     {
-        let pageID = $("body")[0].getAttribute("id");
+        loadHeader(clientRouter.ActiveLink);
+      
+        loadContent(clientRouter.ActiveLink, ActiveLinkCallBack(clientRouter.ActiveLink));
 
-        switch(pageID)
-        {
-          case 'contact':
-            displayContact();
-            break;
-          case 'contact-list':
-            displayContactList();
-            break;
-          case 'edit':
-            displayEdit();
-            break;
-          case 'login':
-            displayLogin();
-            break;
-          case 'logout':
-            performLogout();
-            break;
-        }
+        loadFooter();
     }
 
     window.addEventListener("load", Start);

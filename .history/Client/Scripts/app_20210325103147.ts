@@ -1,4 +1,3 @@
-
 namespace core
 {
     let linkData: string;
@@ -275,16 +274,13 @@ namespace core
     /* function toggleLogin(): void
     {
       let contactListLink = $("#contactListLink")[0]; // makes a reference to the contact-list link
-
       // if user is logged in
       if(sessionStorage.getItem("user"))
       { //Logged in -----------------------
-
         // swap out the login link for logout
         $("#loginListItem").html(
         `<a id="logout" class="nav-link" aria-current="page"><i class="fas fa-sign-out-alt"></i> Logout</a>`
         );
-
         if(!contactListLink) // checks if contact-list link is not already present
         {
           // add contact-list link
@@ -295,7 +291,6 @@ namespace core
       }
       else
       { // Logged out-----------------------
-
         // swap out the login link for logout
         $("#loginListItem").html(
           `<a id="login" class="nav-link" aria-current="page"><i class="fas fa-sign-in-alt"></i> Login</a>`
@@ -306,9 +301,7 @@ namespace core
           // remove contact-list link
           $("#contactListLink").remove();
         }
-
       }
-
       addLinkEvents();
       highlightActiveLink(clientRouter.ActiveLink);
     } */

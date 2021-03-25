@@ -1,8 +1,9 @@
 
 namespace core
 {
-    let linkData: string;
+let linkData: string;
 
+  
     function testFullName(): void
     {
       let messageArea = $("#messageArea").hide();
@@ -92,8 +93,8 @@ namespace core
             }
           }
 
-          // reload contact page
-          location.href ='/contact';
+          //loadLink("contact"); // reload contact page
+          location.href = "/contact";
         });
     }
 
@@ -135,7 +136,8 @@ namespace core
         contactList.innerHTML = data;
 
         $("button.edit").on("click", function(){
-          location.href = '/edit/' + $(this).val().toString();
+          linkData = $(this).val().toString();
+          location.href = '/edit?' +  $(this).val().toString();
          });
 
          $("button.delete").on("click", function(){
@@ -143,21 +145,21 @@ namespace core
            {
             localStorage.removeItem($(this).val().toString());
            }
-         
-           // refresh the page
-           location.href = '/contact-list';
+          // refresh the page
+          location.href = '/contact-list';
          });
       }
 
       $("#addButton").on("click", function() 
       {
-        location.href = '/edit';
+   
+      location.href = '/edit';
       });
     }
 
     function displayEdit(): void
     {
-      let key = $("body")[0].dataset.contactid;
+      let key = linkData;
 
       let contact = new core.Contact();
 
@@ -204,7 +206,7 @@ namespace core
           }
 
           // return to the contact list
-          linkData = "";
+          linkData = '';
           location.href = '/contact-list';
           
         });
@@ -272,7 +274,9 @@ namespace core
       });
     }
 
-    /* function toggleLogin(): void
+  
+/* 
+    function toggleLogin(): void
     {
       let contactListLink = $("#contactListLink")[0]; // makes a reference to the contact-list link
 
@@ -309,8 +313,8 @@ namespace core
 
       }
 
-      addLinkEvents();
-      highlightActiveLink(clientRouter.ActiveLink);
+     // addLinkEvents();
+    //  highlightActiveLink(router.ActiveLink);
     } */
 
     function authGuard():void
@@ -318,16 +322,12 @@ namespace core
       if(!sessionStorage.getItem("user"))
       {
       // redirect back to login page
-      //loadLink("login");
       location.href = '/login';
       }
     }
 
-    function performLogout():void
-    {
-      sessionStorage.clear();
-      location.href = "/login";
-    }
+
+  
 
     /**
      * This is the entry point for our program
@@ -335,24 +335,21 @@ namespace core
      */
     function Start(): void
     {
+  
         let pageID = $("body")[0].getAttribute("id");
-
-        switch(pageID)
+        switch (pageID) 
         {
-          case 'contact':
+          case "contact":
             displayContact();
             break;
-          case 'contact-list':
+          case "contact-list":
             displayContactList();
             break;
-          case 'edit':
+          case "edit":
             displayEdit();
             break;
-          case 'login':
+          case "login":
             displayLogin();
-            break;
-          case 'logout':
-            performLogout();
             break;
         }
     }
